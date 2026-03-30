@@ -9,7 +9,20 @@ if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: '. $conn->connect_error);
 }
 
-$sql = "select KdNr, Nachname, Vorname from kundennummer";
+$sql = "select 
+k.KdNr, 
+k.Nachname, 
+k.Vorname, 
+b.BstNr, 
+b.Datum, 
+c.ArNr, 
+c.ArAz, 
+a.ArNm, 
+a.Preis 
+FROM kundennummer k
+LEFT JOIN bestellungen b ON k.KdNr = b.KdNr
+LEFT JOIN bestellposition c ON b.BstNr = c.BstNr
+LEFT JOIN artikel a ON c.ArNr = a.ArNr";
 //Executing the SQL query
 $result = $conn->query($sql);
 
