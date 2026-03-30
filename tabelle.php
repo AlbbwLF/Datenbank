@@ -19,11 +19,11 @@ if(!empty($kunden)){
         echo "<td>{$row['KdNr']}</td>";
         echo "<td>{$row['Nachname']}</td>";
         echo "<td>{$row['Vorname']}</td>";
-        echo "<td>{$row['Bestellnummer']}</td>";
+        echo "<td>{$row['BstNr']}</td>";
         echo "<td>{$row['Datum']}</td>";
-        echo "<td>{$row['Artikelnummer']}</td>";
-        echo "<td>{$row['Artikel Anzahl']}</td>";
-        echo "<td>{$row['Artikelname']}</td>";
+        echo "<td>{$row['ArNr']}</td>";
+        echo "<td>{$row['ArAz']}</td>";
+        echo "<td>{$row['ArNr']}</td>";
         echo "<td>{$row['Preis']}</td>";
         echo "</tr>";
     }
