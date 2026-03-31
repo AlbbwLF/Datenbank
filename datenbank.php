@@ -33,7 +33,6 @@ if($result->num_rows > 0) {
         $kunden[]=$row;
     }
 }
-
 $conn->close();
 
 include 'tabelle.php';

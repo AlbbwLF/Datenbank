@@ -20,11 +20,11 @@ if(!empty($kunden)){
         echo "<td>{$row['Nachname']}</td>";
         echo "<td>{$row['Vorname']}</td>";
         echo "<td>{$row['BstNr']}</td>";
-        echo "<td>{$row['Datum']}</td>";
+        echo "<td>{$row['Datum']}</td>"; 
         echo "<td>{$row['ArNr']}</td>";
         echo "<td>{$row['ArAz']}</td>";
         echo "<td>{$row['ArNr']}</td>";
-        echo "<td>{$row['Preis']}</td>";
+        echo "<td>{$row['Preis']}€</td>";
         echo "</tr>";
     }
     echo "</table>";
