@@ -6,4 +6,5 @@ table, th, td{
     width: auto;
     border-collapse: separate;
     word-wrap: break-word;
+    text-align: center;
 }
