@@ -27,7 +27,7 @@ if(!empty($kunden)){
         echo "<td><input type='number' name='ArNr[$id]' value='{$row['ArNr']}'></td>";
         echo "<td><input type='number' name='ArAz[$id]' value='{$row['ArAz']}'></td>";
         echo "<td><input type='text' name='ArNm[$id]' value='{$row['ArNm']}'></td>";
-        echo "<td><input type='number' name='Preis[$id]' value='{$row['Preis']}'></td>";
+        echo "<td><input type='number' step='0.01 'name='Preis[$id]' value='{$row['Preis']}'></td>";
         echo "</tr>";
     }
     echo "</table>";
