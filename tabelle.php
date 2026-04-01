@@ -17,16 +17,17 @@ if(!empty($kunden)){
     </tr>";
 
     foreach($kunden as $row) {
+        $id = $row['KdNr'];
         echo "<tr>";
         echo "<td><input type='text' name='KdNr[{$row['KdNr']}]' value='{$row['KdNr']}'></td>";
-        echo "<td><input type='text' name='Nachname[{$row['Nachname']}]' value='{$row['Nachname']}'></td>";
-        echo "<td><input type='text' name='Vorname[{$row['Vorname']}]' value='{$row['Vorname']}'></td>";
-        echo "<td><input type='number' name='BstNr[{$row['BstNr']}]' value='{$row['BstNr']}'></td>";
-        echo "<td><input type='date' name='Datum[{$row['Datum']}]' value='{$row['Datum']}'></td>"; 
-        echo "<td><input type='number' name='ArNr[{$row['ArNr']}]' value='{$row['ArNr']}'></td>";
-        echo "<td><input type='number' name='ArAz[{$row['ArAz']}]' value='{$row['ArAz']}'></td>";
-        echo "<td><input type='text' name='ArNm[{$row['ArNm']}]' value='{$row['ArNm']}'></td>";
-        echo "<td><input type='number' name='Preis[{$row['Preis']}]' value='{$row['Preis']}'></td>";
+        echo "<td><input type='text' name='Nachname[$id]' value='{$row['Nachname']}'></td>";
+        echo "<td><input type='text' name='Vorname[$id]' value='{$row['Vorname']}'></td>";
+        echo "<td><input type='number' name='BstNr[$id]' value='{$row['BstNr']}'></td>";
+        echo "<td><input type='date' name='Datum[$id]' value='{$row['Datum']}'></td>"; 
+        echo "<td><input type='number' name='ArNr[$id]' value='{$row['ArNr']}'></td>";
+        echo "<td><input type='number' name='ArAz[$id]' value='{$row['ArAz']}'></td>";
+        echo "<td><input type='text' name='ArNm[$id]' value='{$row['ArNm']}'></td>";
+        echo "<td><input type='number' name='Preis[$id]' value='{$row['Preis']}'></td>";
         echo "</tr>";
     }
     echo "</table>";
@@ -38,10 +39,12 @@ if(!empty($kunden)){
 ?>
 </form>
 <script>
-    document.addEventListener(
-        'DOMContentLoaded', () => {
-            document.getElementById('submitButton').addEventListener('click', function (){
-                alert('Form submitted!');
-            });
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('submitButton');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                alert('Form submitted');
+            })
+        }
+    });
 </script>
