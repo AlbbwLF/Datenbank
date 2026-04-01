@@ -12,3 +12,7 @@ table, th, td{
     word-wrap: break-word;
     text-align: center;
 }
+.kunden-tabelle input {
+    border: none;
+    background-color: rgb(207, 146, 146);
+}

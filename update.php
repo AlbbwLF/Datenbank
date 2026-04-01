@@ -9,15 +9,18 @@ if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: '. $conn->connect_error);
 }
 
-//Durch alle Nachnamen gehen
-foreach ($_POST['Nachname'] as $KdNr -> $Nachname) {
-    $Vorname = $_POST['Vorname'][ $KdNr];
+// Prepared Statement
+$stmt = $conn->prepare("UPDATE kundennummer SET Nachname = ?, Vorname = ? WHERE KdNr = ?");
 
-    $sql = "Update kunden set Nachname='$Nachname', Vorname='$Vorname' where KdNr=$KdNr";
-    $conn->query($sql);
+foreach ($_POST['Nachname'] as $KdNr => $Nachname) {
+    $Vorname = $_POST['Vorname'][$KdNr];
+
+    $stmt->bind_param("ssi", $Nachname, $Vorname, $KdNr);
+    $stmt->execute();
 }
+
+$stmt->close();
 $conn->close();
 
-header("location: index.php");
+header("Location: index.php");
 exit;
-?>
