@@ -49,8 +49,8 @@ list($KdNr, $BstNr, $ArNr) = explode("_", $key);
 
     //2. Bestellungen Tabelle
     if ($BstNr > 0){
-        $stmtBestellung->bind_param("si", $Datum, $BstNr);
-        $stmtBestellung->execute();
+        $stmtBestellungen->bind_param("si", $Datum, $BstNr);
+        $stmtBestellungen->execute();
     }
 
     //3. Bestellposition Tabelle
