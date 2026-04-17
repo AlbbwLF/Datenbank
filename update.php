@@ -32,14 +32,15 @@ if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel){
     die("SQL Fehler: " . $conn->error);
 }
 
-foreach ($_POST['Nachname'] as $KdNr => $Nachname) {
-    $Vorname = $_POST['Vorname'][$KdNr] ?? '';
-    $BstNr = $_POST['BstNr'][$KdNr] ?? 0;
-    $Datum = $_POST['Datum'][$KdNr] ?? '0000-00-00';
-    $ArNr = $_POST['ArNr'][$KdNr] ?? 0;
-    $ArAz = $_POST['ArAz'][$KdNr] ?? 0;
-    $ArNm = $_POST['ArNm'][$KdNr] ??'';
-    $Preis = $_POST['Preis'][$KdNr] ?? 0;
+foreach ($_POST['Nachname'] as $key => $Nachname) {
+
+list($KdNr, $BstNr, $ArNr) = explode("_", $key);
+
+    $Vorname = $_POST['Vorname'][$key] ?? '';
+    $Datum = $_POST['Datum'][$key] ?? '0000-00-00';
+    $ArAz = $_POST['ArAz'][$key] ?? 0;
+    $ArNm = $_POST['ArNm'][$key] ??'';
+    $Preis = $_POST['Preis'][$key] ?? 0;
 
     //Parameter s=string i=integer und d=double 
     // 1. Kundennummer Tabelle

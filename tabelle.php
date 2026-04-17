@@ -17,17 +17,20 @@ if(!empty($kunden)){
     </tr>";
 
     foreach($kunden as $row) {
-        $id = $row['KdNr'];
+
+    $key = $row['KdNr'] . "_" . $row['BstNr'] . "_" . $row ['ArNr'];
+    
         echo "<tr>";
-        echo "<td><input type='text' name='KdNr[{$row['KdNr']}]' value='{$row['KdNr']}'></td>";
-        echo "<td><input type='text' name='Nachname[$id]' value='{$row['Nachname']}'></td>";
-        echo "<td><input type='text' name='Vorname[$id]' value='{$row['Vorname']}'></td>";
-        echo "<td><input type='number' name='BstNr[$id]' value='{$row['BstNr']}'></td>";
-        echo "<td><input type='date' name='Datum[$id]' value='{$row['Datum']}'></td>"; 
-        echo "<td><input type='number' name='ArNr[$id]' value='{$row['ArNr']}'></td>";
-        echo "<td><input type='number' name='ArAz[$id]' value='{$row['ArAz']}'></td>";
-        echo "<td><input type='text' name='ArNm[$id]' value='{$row['ArNm']}'></td>";
-        echo "<td><input type='number' step='0.01' name='Preis[$id]' value='{$row['Preis']}'></td>";
+        echo "<td><input type='text' name='KdNr[$key]' value='{$row['KdNr']}' readonly></td>";
+        echo "<td><input type='text' name='Nachname[$key]' value='{$row['Nachname']}'></td>";
+        echo "<td><input type='text' name='Vorname[$key]' value='{$row['Vorname']}'></td>";
+        echo "<td><input type='number' name='BstNr[$key]' value='{$row['BstNr']}'></td>";
+        echo "<td><input type='date' name='Datum[$key]' value='{$row['Datum']}'></td>";
+        echo "<td><input type='number' name='ArNr[$key]' value='{$row['ArNr']}'></td>";
+        echo "<td><input type='number' name='ArAz[$key]' value='{$row['ArAz']}'></td>";
+        echo "<td><input type='text' name='ArNm[$key]' value='{$row['ArNm']}'></td>";
+        echo "<td><input type='number' step='0.01' name='Preis[$key]' value='{$row['Preis']}'></td>";
+        echo "<input type='hidden' name='ids[$key]' value='$key'>";
         echo "</tr>";
     }
     echo "</table>";
