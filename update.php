@@ -11,18 +11,24 @@ if(empty($_POST)){
     die("Keine Daten empfangen");
 }
 
-$stmt = $conn->prepare("UPDATE kundennummer SET 
+$stmtKunde = $conn->prepare("UPDATE kundennummer SET 
 Nachname = ?,
-Vorname = ?,
-BstNr = ?,
-Datum = ?,
-ArNr = ?,
-ArAz = ?,
-ArNm = ?,
-Preis = ?
+Vorname = ?
   WHERE KdNr = ?");
 
-if(!$stmt){
+  $stmtBestellungen = $conn->prepare("UPDATE bestellungen
+  SET Datum = ? 
+  WHERE BstNr = ?");
+
+$stmtPosition = $conn->prepare("UPDATE bestellposition 
+SET ArAz = ?
+WHERE BstNr = ? and ArNr = ?");
+
+$stmtArtikel = $conn->prepare("UPDATE artikel
+SET ArNm = ?, Preis = ?
+Where ArNr = ?");
+
+if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel){
     die("SQL Fehler: " . $conn->error);
 }
 
@@ -34,14 +40,36 @@ foreach ($_POST['Nachname'] as $KdNr => $Nachname) {
     $ArAz = $_POST['ArAz'][$KdNr] ?? 0;
     $ArNm = $_POST['ArNm'][$KdNr] ??'';
     $Preis = $_POST['Preis'][$KdNr] ?? 0;
+
     //Parameter s=string i=integer und d=double 
-    $stmt->bind_param("ssiiiisdi", $Nachname, $Vorname, $BstNr, $Datum, $ArNr, $ArAz, $ArNm, $Preis, $KdNr);
-    if(!$stmt->execute()){
-        die("Fehler beim Update KdNr $KdNr: " . $stmt->error);
-    };
+    // 1. Kundennummer Tabelle
+    $stmtKunde->bind_param("ssi", $Nachname, $Vorname,$KdNr);
+    $stmtKunde->execute();
+
+    //2. Bestellungen Tabelle
+    if ($BstNr > 0){
+        $stmtBestellung->bind_param("si", $Datum, $BstNr);
+        $stmtBestellung->execute();
+    }
+
+    //3. Bestellposition Tabelle
+    if ($BstNr > 0 && $ArNr > 0) {
+        $stmtPosition->bind_param("iii", $ArAz, $BstNr, $ArNr);
+        $stmtPosition->execute();
+    }
+
+    // 4. Artikel
+    if ($ArNr > 0) {
+        $stmtArtikel->bind_param("sdi", $ArNm, $Preis, $ArNr);
+        $stmtArtikel->execute();
+    }
 }
 
-$stmt->close();
+$stmtKunde->close();
+$stmtBestellungen->close();
+$stmtPosition->close();
+$stmtArtikel->close();
+
 $conn->close();
 
 header("Location: index.php");
