@@ -19,7 +19,7 @@ if(!empty($kunden)){
     foreach($kunden as $row) {
 
     $key = $row['KdNr'] . "_" . $row['BstNr'] . "_" . $row ['ArNr'];
-    
+
         echo "<tr>";
         echo "<td><input type='text' name='KdNr[$key]' value='{$row['KdNr']}' readonly></td>";
         echo "<td><input type='text' name='Nachname[$key]' value='{$row['Nachname']}'></td>";
@@ -34,6 +34,19 @@ if(!empty($kunden)){
         echo "</tr>";
     }
     echo "</table>";
+    echo "<br>";
+    echo "<tr>";
+    echo "<h2>neu</h2>";
+    echo "<br>";
+    echo "<td><input type='text' name='Nachname[new]' ></td>";
+    echo "<td><input type='text' name='Vorname[new]' ></td>";
+    echo "<td><input type='number' name='BstNr[new]' ></td>";
+    echo "<td><input type='date' name='Datum[new]' ></td>";
+    echo "<td><input type='number' name='ArNr[new]' ></td>";
+    echo "<td><input type='number' name='ArAz[new]' ></td>";
+    echo "<td><input type='text' name='ArNm[new]' ></td>";
+    echo "<td><input type='number' step='0.01' name='Preis[new]' ></td>";
+    echo "</tr>";
     echo "<br>";
     echo "<button type='submit' id='submitButton'>Änderungen speichern</button>";
 } else {

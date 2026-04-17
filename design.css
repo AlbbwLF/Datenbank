@@ -16,3 +16,7 @@ table, th, td{
     border: none;
     background-color: rgb(207, 146, 146);
 }
+
+h2 {
+    text-align: center;
+}

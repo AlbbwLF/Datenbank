@@ -28,11 +28,67 @@ $stmtArtikel = $conn->prepare("UPDATE artikel
 SET ArNm = ?, Preis = ?
 Where ArNr = ?");
 
-if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel){
+$stmtInsertKunde = $conn->prepare("INSERT INTO kundennummer (Nachname, Vorname)
+values (?, ?)");
+
+$stmtInsertBestellung = $conn->prepare("INSERT INTO bestellungen (KdNr, Datum)
+values (?, ?)");
+
+$stmtInsertPosition = $conn->prepare("INSERT INTO bestellposition (BstNr, ArNr, ArAz) 
+    VALUES (?, ?, ?)
+");
+
+$checkArtikel = $conn->prepare("SELECT ArNr FROM artikel WHERE ArNr = ?");
+$checkArtikel->bind_param("i", $ArNr);
+$checkArtikel->execute();
+$result = $checkArtikel->get_result();
+
+if ($result->num_rows == 0) {
+    $stmtInsertArtikel->bind_param("isd", $ArNr, $ArNm, $Preis);
+    $stmtInsertArtikel->execute();
+}
+
+if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel || !$stmtInsertKunde || !$stmtInsertBestellung || !$stmtInsertPosition || !$stmtInsertArtikel){
     die("SQL Fehler: " . $conn->error);
 }
 
 foreach ($_POST['Nachname'] as $key => $Nachname) {
+    if ($key === "new") {
+
+    $Vorname = $_POST['Vorname'][$key] ?? '';
+    $Datum = $_POST['Datum'][$key] ?? null;
+    $ArNr = $_POST['ArNr'][$key] ?? 0;
+    $ArAz = $_POST['ArAz'][$key] ?? 0;
+    $ArNm = $_POST['ArNm'][$key] ?? '';
+    $Preis = $_POST['Preis'][$key] ?? 0;
+
+    //1. Kunden anlegen
+    $stmtInsertKunde-> bind_param("ss", $Nachname, $Vorname);
+    $stmtInsertKunde->execute();
+//bei neuem Kunden
+    $KdNr = $conn->insert_id; 
+
+       // 2. Bestellung
+        if ($Datum) {
+            $stmtInsertBestellung->bind_param("is", $KdNr, $Datum);
+            $stmtInsertBestellung->execute();
+
+            $BstNr = $conn->insert_id;
+
+            // 3. Bestellposition festlegen
+            if ($ArNr > 0) {
+                $stmtInsertPosition->bind_param("iii", $BstNr, $ArNr, $ArAz);
+                $stmtInsertPosition->execute();
+            }
+        }
+
+        // Artikel anlegen
+        if ($ArNr > 0) {
+            $stmtInsertArtikel->bind_param("isd", $ArNr, $ArNm, $Preis);
+            $stmtInsertArtikel->execute();
+        }
+
+    }else{
 
 list($KdNr, $BstNr, $ArNr) = explode("_", $key);
 
@@ -63,6 +119,7 @@ list($KdNr, $BstNr, $ArNr) = explode("_", $key);
     if ($ArNr > 0) {
         $stmtArtikel->bind_param("sdi", $ArNm, $Preis, $ArNr);
         $stmtArtikel->execute();
+    }
     }
 }
 
