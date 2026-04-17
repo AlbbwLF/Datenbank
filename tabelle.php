@@ -36,7 +36,7 @@ if(!empty($kunden)){
     echo "</table>";
     echo "<br>";
     echo "<tr>";
-    echo "<h2>neu</h2>";
+    echo "<h2>Neuer Eintrag</h2>";
     echo "<br>";
     echo "<td><input type='text' name='Nachname[new]' ></td>";
     echo "<td><input type='text' name='Vorname[new]' ></td>";

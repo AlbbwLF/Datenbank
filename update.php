@@ -38,17 +38,15 @@ $stmtInsertPosition = $conn->prepare("INSERT INTO bestellposition (BstNr, ArNr, 
     VALUES (?, ?, ?)
 ");
 
-$checkArtikel = $conn->prepare("SELECT ArNr FROM artikel WHERE ArNr = ?");
-$checkArtikel->bind_param("i", $ArNr);
-$checkArtikel->execute();
-$result = $checkArtikel->get_result();
+$stmtUpsertArtikel = $conn->prepare("
+    INSERT INTO artikel (ArNr, ArNm, Preis)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+    ArNm = VALUES(ArNm),
+    Preis = VALUES(Preis)
+");
 
-if ($result->num_rows == 0) {
-    $stmtInsertArtikel->bind_param("isd", $ArNr, $ArNm, $Preis);
-    $stmtInsertArtikel->execute();
-}
-
-if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel || !$stmtInsertKunde || !$stmtInsertBestellung || !$stmtInsertPosition || !$stmtInsertArtikel){
+if(!$stmtKunde || !$stmtBestellungen || !$stmtPosition || !$stmtArtikel || !$stmtInsertKunde || !$stmtInsertBestellung || !$stmtInsertPosition || !$stmtUpsertArtikel){
     die("SQL Fehler: " . $conn->error);
 }
 
@@ -82,11 +80,11 @@ foreach ($_POST['Nachname'] as $key => $Nachname) {
             }
         }
 
-        // Artikel anlegen
+        // 4. Artikel anlegen
         if ($ArNr > 0) {
-            $stmtInsertArtikel->bind_param("isd", $ArNr, $ArNm, $Preis);
-            $stmtInsertArtikel->execute();
-        }
+        $stmtUpsertArtikel->bind_param("isd", $ArNr, $ArNm, $Preis);
+        $stmtUpsertArtikel->execute();
+}
 
     }else{
 
