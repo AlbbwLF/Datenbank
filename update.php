@@ -29,14 +29,16 @@ if(!$stmt){
 foreach ($_POST['Nachname'] as $KdNr => $Nachname) {
     $Vorname = $_POST['Vorname'][$KdNr] ?? '';
     $BstNr = $_POST['BstNr'][$KdNr] ?? 0;
-    $Datum = $_POST['Datum'][$KdNr] ?? null;
+    $Datum = $_POST['Datum'][$KdNr] ?? '0000-00-00';
     $ArNr = $_POST['ArNr'][$KdNr] ?? 0;
     $ArAz = $_POST['ArAz'][$KdNr] ?? 0;
     $ArNm = $_POST['ArNm'][$KdNr] ??'';
     $Preis = $_POST['Preis'][$KdNr] ?? 0;
     //Parameter s=string i=integer und d=double 
-    $stmt->bind_param("ssissisdi", $Nachname, $Vorname, $BstNr, $Datum, $ArNr, $ArAz, $ArNm, $Preis, $KdNr);
-    $stmt->execute();
+    $stmt->bind_param("ssiiiisdi", $Nachname, $Vorname, $BstNr, $Datum, $ArNr, $ArAz, $ArNm, $Preis, $KdNr);
+    if(!$stmt->execute()){
+        die("Fehler beim Update KdNr $KdNr: " . $stmt->error);
+    };
 }
 
 $stmt->close();
